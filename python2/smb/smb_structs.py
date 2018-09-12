@@ -291,7 +291,8 @@ class ComNegotiateRequest(Payload):
         assert message.payload == self
         message.parameters_data = ''
         if SUPPORT_SMB2:
-            message.data = ''.join(map(lambda s: '\x02'+s+'\x00', DIALECTS + DIALECTS2))
+            message.data = ''.join(map(lambda s: '\x02'+s+'\x00',  DIALECTS2))
+            # message.data = ''.join(map(lambda s: '\x02'+s+'\x00', DIALECTS + DIALECTS2))
         else:
             message.data = ''.join(map(lambda s: '\x02'+s+'\x00', DIALECTS))
 
