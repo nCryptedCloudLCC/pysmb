@@ -181,15 +181,22 @@ class SMB(NMBSession):
 
     def onNMBSessionMessage(self, flags, data):
         while True:
+            if not self.is_using_smb2:
+                self.log.info('Now switching over to SMB2 protocol communication')
+                self.is_using_smb2 = True
+                self.mid = 0  # Must reset messageID counter, or else remote SMB2 server will disconnect
+                self._setupSMB2Methods()
+                self.smb_message = self._klassSMBMessage()
+            i = self.smb_message.decode(data)
             # try:
             #     i = self.smb_message.decode(data)
             # except SMB2ProtocolHeaderError:
-            self.log.info('Now switching over to SMB2 protocol communication')
-            self.is_using_smb2 = True
-            self.mid = 0  # Must reset messageID counter, or else remote SMB2 server will disconnect
-            self._setupSMB2Methods()
-            self.smb_message = self._klassSMBMessage()
-            i = self.smb_message.decode(data)
+            #     self.log.info('Now switching over to SMB2 protocol communication')
+            #     self.is_using_smb2 = True
+            #     self.mid = 0  # Must reset messageID counter, or else remote SMB2 server will disconnect
+            #     self._setupSMB2Methods()
+            #     self.smb_message = self._klassSMBMessage()
+            #     i = self.smb_message.decode(data)
 
             next_message_offset = 0
             if self.is_using_smb2:
