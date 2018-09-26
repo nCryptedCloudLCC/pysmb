@@ -40,6 +40,8 @@ FILE_ID_BOTH_DIRECTORY_INFORMATION = 0x25
 SMB_FIND_FILE_BOTH_DIRECTORY_INFO = 0x0104
 SMB_FIND_FILE_ID_BOTH_DIRECTORY_INFO = 0x0106
 
+SMB1_SEARCH_COUNT = 1000
+
 # https://msdn.microsoft.com/en-us/library/ee441880.aspx
 # SMB_FIND_FILE_BOTH_DIRECTORY_INFO structure. See [MS-CIFS]: 2.2.8.1.7 and [MS-SMB]: 2.2.8.1.1
 SMB_FIND_FILE_BOTH_DIRECTORY_INFO_STRUCT = (
@@ -2113,7 +2115,7 @@ c8 4f 32 4b 70 16 d3 01 12 78 5a 47 bf 6e e1 88
             params_bytes = \
                 struct.pack('<HHHHI',
                             search & 0xFFFF, # SearchAttributes (need to restrict the values due to introduction of SMB_FILE_ATTRIBUTE_INCL_NORMAL)
-                            100,    # SearchCount
+                            SMB1_SEARCH_COUNT,    # SearchCount
                             0x0006, # Flags: SMB_FIND_CLOSE_AT_EOS | SMB_FIND_RETURN_RESUME_KEYS
                             SMB_FIND_FILE_BOTH_DIRECTORY_INFO, # InfoLevel: SMB_FIND_FILE_BOTH_DIRECTORY_INFO
                             0x0000) # SearchStorageType (seems to be ignored by Windows)
@@ -2213,7 +2215,7 @@ c8 4f 32 4b 70 16 d3 01 12 78 5a 47 bf 6e e1 88
             params_bytes = \
                 struct.pack('<HHHIH',
                             sid,        # SID
-                            100,        # SearchCount
+                            SMB1_SEARCH_COUNT,        # SearchCount
                             SMB_FIND_FILE_BOTH_DIRECTORY_INFO,     # InfoLevel: SMB_FIND_FILE_BOTH_DIRECTORY_INFO
                             resume_key, # ResumeKey
                             0x0006)     # Flags: SMB_FIND_RETURN_RESUME_KEYS | SMB_FIND_CLOSE_AT_EOS
