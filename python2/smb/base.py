@@ -2155,8 +2155,8 @@ c8 4f 32 4b 70 16 d3 01 12 78 5a 47 bf 6e e1 88
                 if offset2 + filename_length > data_length:
                     return data_bytes[offset:]
 
-                filename = data_bytes[offset2:offset2+filename_length].decode('UTF-16LE')
-                short_name = short_name.decode('UTF-16LE')
+                filename = data_bytes[offset2:offset2+filename_length].decode('UTF-16LE', errors='replace')
+                short_name = short_name.decode('UTF-16LE', errors='replace')
 
                 accept_result = False
                 if (file_attributes & 0xff) in ( 0x00, ATTR_NORMAL ): # Only the first 8-bits are compared. We ignore other bits like temp, compressed, encryption, sparse, indexed, etc
